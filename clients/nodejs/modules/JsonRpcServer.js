@@ -131,6 +131,7 @@ class JsonRpcServer {
         this._methods.set('createAccount', this.createAccount.bind(this));
         this._methods.set('getBalance', this.getBalance.bind(this));
         this._methods.set('getAccount', this.getAccount.bind(this));
+        this._methods.set('addAccount', this.addAccount.bind(this));
 
         // Blockchain
         this._methods.set('blockNumber', this.blockNumber.bind(this));
@@ -579,6 +580,17 @@ class JsonRpcServer {
         const address = Nimiq.Address.fromString(addr);
         const account = await this._accounts.get(address);
         return this._accountToObj(account, address);
+    }
+
+    async addAccount(keyString) {
+        const key = new Nimiq.PrivateKey(Buffer.from(keyString, "hex"));
+        const keyPair = Nimiq.KeyPair.derive(key);
+        const wallet = new Nimiq.Wallet(keyPair);
+        if (!wallet || !(wallet instanceof Nimiq.Wallet)) {
+            return null;
+        }
+        await this._walletStore.put(wallet);
+        return this._walletToObj(wallet);
     }
 
     /*
