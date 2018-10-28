@@ -878,9 +878,9 @@ class JsonRpcServer {
                 }
             }
             if (single && result.length === 1) {
-                res.end(JSON.stringify(result[0]));
+                res.end(JSON.stringify(result[0]).concat('\n'));
             } else if (!single) {
-                res.end(JSON.stringify(result));
+                res.end(JSON.stringify(result).concat('\n'));
             }
         });
     }
