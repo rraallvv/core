@@ -228,7 +228,7 @@ const $ = {};
     const extraData = config.miner.extraData ? Nimiq.BufferUtils.fromAscii(config.miner.extraData) : new Uint8Array(0);
     if (config.poolMining.enabled || config.uiServer.enabled) { // ui requires SmartPoolMiner to be able to switch
         // between solo mining and pool mining
-        const deviceId = Nimiq.BasePoolMiner.generateDeviceId(networkConfig);
+		const deviceId = config.miner.extraData || Nimiq.BasePoolMiner.generateDeviceId(networkConfig);
         const deviceData = config.poolMining.deviceData;
         const poolMode = isNano ? 'nano' : config.poolMining.mode;
         switch (poolMode) {
